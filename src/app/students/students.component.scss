@@ -1,0 +1,45 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background: #1e293b;
+  color: white;
+
+  button {
+    padding: 10px 16px;
+    border: none;
+    background: #38bdf8;
+    color: #000;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 30px;
+  align-items: center;
+}
+
+.card {
+  width: 100%;
+  max-width: 500px;
+  background: #f8fafc;
+  padding: 20px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .delete {
+    background: #ef4444;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+}
