@@ -1,29 +1,45 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
+import { GetStudents } from '../../models/student.model';
+import { StudentsService } from '../../services/students/students.service';
+import { RouterModule } from '@angular/router';
+
 
 @Component({
   selector: 'app-students',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule], 
   templateUrl: './students.component.html',
   styleUrls: ['./students.component.scss']
 })
-export class StudentsComponent {
+export class StudentsComponent implements OnInit {
 
-  students = [
-    { name: 'Rey Maria', course: 'SBMA', year: '3rd Year' },
-    { name: 'Carlo Patcho', course: 'NURSING', year: '2nd Year' },
-    { name: 'Lizandro Yap', course: 'MEDTECH', year: '4th Year' }
-  ];
+  private readonly studentsService = inject(StudentsService);
+
+  students = signal<GetStudents[]>([]);
 
   constructor(private router: Router) {}
+
+  async ngOnInit(): Promise<void> {
+    const students = await this.studentsService.getStudents();
+    this.students.set(students);
+  }
 
   goToCreateStudent() {
     this.router.navigate(['/create-student']);
   }
 
-  deleteStudent(index: number) {
-    this.students.splice(index, 1);
+  public async deleteStudent(studentId: string): Promise<void> {
+    try {
+      await this.studentsService.deleteStudent(studentId);
+
+      this.students.set(
+        this.students().filter(student => student.id !== studentId)
+      );
+
+    } catch (error) {
+      console.error(error);
+    }
   }
 }
